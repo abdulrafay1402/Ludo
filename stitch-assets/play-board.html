@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "secondary-container": "#6bfe9c", "on-surface": "#121c2a", "inverse-surface": "#27313f", "surface-dim": "#d0dbed", "on-secondary-container": "#00743a", "surface-container": "#e6eeff", "on-tertiary-fixed-variant": "#004b73", "primary-fixed": "#e4dfff", "secondary-fixed-dim": "#4ae183", "on-primary-fixed-variant": "#4029ba", "surface-container-high": "#dee9fc", "inverse-primary": "#c6bfff", "safe-star": "#F2C94C", "outline": "#787586", "surface": "#f8f9ff", "inverse-on-surface": "#eaf1ff", "player-red-tint": "#FDE8E4", "canvas-base": "#F7F5F0", "surface-container-highest": "#d9e3f6", "text-secondary": "#6B7280", "on-background": "#121c2a", "player-blue-tint": "#EBF5FB", "surface-bright": "#f8f9ff", "player-green": "#2ECC71", "on-primary-container": "#faf6ff", "background": "#f8f9ff", "on-primary-fixed": "#160066", "surface-container-low": "#eff4ff", "player-blue": "#3498DB", "text-muted": "#9CA3AF", "tertiary": "#005d8e", "player-green-tint": "#E5F9ED", "error-container": "#ffdad6", "primary-hover": "#5A4AD1", "on-tertiary-fixed": "#001d31", "on-error-container": "#93000a", "error": "#ba1a1a", "outline-variant": "#c8c4d7", "on-tertiary-container": "#f2f7ff", "on-error": "#ffffff", "surface-container-lowest": "#ffffff", "on-surface-variant": "#474554", "surface-card": "#FFFFFF", "tertiary-container": "#0077b4", "primary-container": "#6c5ce7", "surface-variant": "#d9e3f6", "on-secondary-fixed": "#00210c", "player-red": "#E74C3C", "player-yellow": "#F1C40F", "tertiary-fixed": "#cce5ff", "primary": "#5341cd", "secondary-fixed": "#6bfe9c", "secondary": "#006d37", "player-yellow-deep": "#E5A914", "primary-fixed-dim": "#c6bfff", "surface-tint": "#5847d2", "on-primary": "#ffffff", "on-tertiary": "#ffffff", "on-secondary-fixed-variant": "#005228", "tertiary-fixed-dim": "#92ccff", "border-subtle": "#E5E7EB", "player-yellow-tint": "#FEF9E7", "on-secondary": "#ffffff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin": "1.5rem", "space-xl": "1.5rem", "space-lg": "1rem", "gutter": "1.25rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "space-md": "0.75rem" }, "fontFamily": { "headline-sm": ["Space Grotesk"], "headline-lg": ["Space Grotesk"], "stat-counter": ["Space Grotesk"], "body-lg": ["Manrope"], "label-sm": ["Manrope"], "label-lg": ["Manrope"], "body-md": ["Manrope"], "body-sm": ["Manrope"], "headline-md": ["Space Grotesk"], "label-md": ["Manrope"], "display-lg": ["Space Grotesk"] }, "fontSize": { "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}], "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "stat-counter": ["20px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700"}], "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}], "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}], "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}], "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}], "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "700"}], "display-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "700"}] } } } };</script></head><body class="bg-canvas-base font-body-md text-on-surface antialiased min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface-card/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 w-full max-w-[1440px] mx-auto px-margin flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-md"><img alt="Ludo AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1ULsblC4mkcpkZGoTe7D1NoDUbPQETggxcT9Nd0L3uK4nUwUUh8je-0k3VguIa2vO_3oxu8iFPXv8iMqcLNflUF5ofcvsY1sZ7qWB8sW6kYMAT4NVlD-5L4el94_ubjtRHb6RS4799EEF10EyUA3xYky_7Sb_M_skbhjzJyc0jaV67SPYKK89SK1_iunfnxNTuDbgCqRrW9QJQjyIMpeMUMAk0tnbtUxtf2nFRVDWBDw8uf2UTRwEVRxurK"/><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Ludo AI</span><span class="font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant px-space-xs py-0.5 rounded-full uppercase tracking-wider">v1.4 Pygame</span></div></div><nav class="hidden xl:flex items-center gap-space-xs bg-canvas-base/80 p-space-xs rounded-xl" data-active-classes="bg-primary-container text-on-primary-container font-label-lg text-label-lg rounded-lg shadow-[0_2px_0_0_rgba(31,41,55,0.08)]"><a class="px-space-md py-space-xs rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-card hover:text-on-surface transition-all" data-path="setup-match" href="#">Setup Match</a><a aria-current="page" class="px-space-md py-space-xs transition-all bg-primary-container text-on-primary-container font-label-lg text-label-lg rounded-lg shadow-[0_2px_0_0_rgba(31,41,55,0.08)]" data-path="play-board" href="#">Play Board</a><a class="px-space-md py-space-xs rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-card hover:text-on-surface transition-all" data-path="game-over-view" href="#">Game Over View</a><a class="px-space-md py-space-xs rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-card hover:text-on-surface transition-all" data-path="design-tokens-ui-kit" href="#">Design Tokens &amp; UI Kit</a></nav><div class="flex items-center gap-space-sm"><div class="hidden sm:flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-xs rounded-lg"><span class="font-label-sm text-label-sm text-text-secondary tracking-widest uppercase font-mono">AL-2002 · AI Lab</span></div><div class="flex items-center gap-space-xs"><button class="w-8 h-8 rounded-lg bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface flex items-center justify-center transition-colors" title="Simulation &amp; Rulebook Controls" type="button"><span class="material-symbols-outlined text-[18px]">help</span></button><button class="hidden md:inline-flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">pause</span>Pause</button><button class="inline-flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-primary text-on-primary hover:bg-primary-hover font-label-md text-label-md shadow-[0_2px_0_0_rgba(31,41,55,0.12)] transition-colors" type="button"><span class="material-symbols-outlined text-[16px]">restart_alt</span>New Game</button><button class="w-8 h-8 rounded-lg bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface flex items-center justify-center transition-colors" title="Simulation Settings" type="button"><span class="material-symbols-outlined text-[18px]">settings</span></button></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-canvas-base"><div class="flex flex-col w-full">
+<div class="w-full max-w-[1440px] mx-auto px-margin py-space-md">
+<!-- Top Analytical Telemetry Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-md mb-space-md bg-surface-card rounded-xl p-space-md shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-player-green animate-pulse"></span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Match #AL-9842</span>
+</div>
+<span class="text-text-muted">/</span>
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-text-secondary bg-surface-container-low px-space-sm py-0.5 rounded-md">
+<span class="material-symbols-outlined text-[16px] text-primary">psychology</span>
+<span>Dual-Engine Evaluation: Expectimax vs MCTS-v3</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">Round</span>
+<span class="font-stat-counter text-stat-counter text-on-surface">14<span class="text-text-muted font-normal text-body-sm">/60</span></span>
+</div>
+<div class="h-6 w-[1px] bg-border-subtle"></div>
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">Turn Eval</span>
+<div class="w-32 bg-surface-container h-2 rounded-full overflow-hidden flex">
+<div class="bg-player-red h-full w-[42%]"></div>
+<div class="bg-player-green h-full w-[28%]"></div>
+<div class="bg-player-yellow h-full w-[16%]"></div>
+<div class="bg-player-blue h-full w-[14%]"></div>
+</div>
+<span class="font-stat-counter text-stat-counter text-player-red">+1.85</span>
+</div>
+<div class="h-6 w-[1px] bg-border-subtle"></div>
+<div class="flex items-center gap-space-xs text-text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">speed</span>
+<span>1.0x Engine Speed</span>
+</div>
+</div>
+</div>
+<!-- Main 3-Zone Workspace (Optimized for 1280x860) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- ZONE 1 & 2: Board Zone (Left/Center Canvas - 8 Cols approx 720px) -->
+<div class="xl:col-span-8 flex flex-col items-center">
+<!-- Board Container Frame -->
+<div class="relative w-full max-w-[720px] aspect-square bg-surface-card rounded-2xl p-space-md shadow-md flex items-center justify-center select-none overflow-hidden">
+<!-- Ambient Active Aura for Red Base -->
+<div class="absolute -top-12 -left-12 w-64 h-64 bg-player-red/15 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Dynamic Evaluation / Toast Overlay -->
+<div class="absolute top-6 z-30 flex items-center gap-space-sm bg-surface-card/95 backdrop-blur-md px-space-md py-space-xs rounded-full shadow-md text-on-surface">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">AI thinking... Expectimax evaluating 18 legal branches</span>
+<span class="font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed-variant px-space-xs py-0.5 rounded-full font-mono">d=2</span>
+</div>
+<!-- Board Canvas Matrix (15x15 Geometric Ludo Grid) -->
+<div class="relative w-full h-full bg-canvas-base rounded-xl overflow-hidden shadow-inner grid grid-cols-15 grid-rows-15" style="display: grid; grid-template-columns: repeat(15, minmax(0, 1fr)); grid-template-rows: repeat(15, minmax(0, 1fr));">
+<!-- ================= QUADRANT 1: TOP-LEFT (RED YARD) ================= -->
+<div class="col-span-6 row-span-6 bg-player-red-tint p-space-md flex flex-col justify-between relative shadow-[inset_0_0_0_1px_rgba(231,76,60,0.15)]">
+<div class="flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-player-red uppercase tracking-wider font-bold">Yard A</span>
+<span class="font-label-sm text-label-sm text-player-red bg-player-red/10 px-2 py-0.5 rounded-full">Human</span>
+</div>
+<!-- Inner 4 Pocket Rings -->
+<div class="grid grid-cols-2 grid-rows-2 gap-space-md p-space-sm bg-surface-card/80 rounded-xl shadow-sm self-center justify-items-center items-center w-40 h-40">
+<!-- Red Token 1 (Home) -->
+<div class="w-12 h-12 rounded-full bg-player-red-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-red-400 to-player-red shadow-[0_3px_0_0_rgba(186,26,26,0.8)] relative flex items-center justify-center transform active:scale-95 cursor-pointer">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/40 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<!-- Red Token 2 (Home) -->
+<div class="w-12 h-12 rounded-full bg-player-red-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-red-400 to-player-red shadow-[0_3px_0_0_rgba(186,26,26,0.8)] relative flex items-center justify-center transform active:scale-95 cursor-pointer">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/40 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<!-- Red Slot 3 (Empty / Token is on track) -->
+<div class="w-12 h-12 rounded-full bg-player-red-tint/50 flex items-center justify-center border-2 border-dashed border-player-red/30">
+<span class="font-label-sm text-label-sm text-player-red/50">OUT</span>
+</div>
+<!-- Red Slot 4 (Empty / Token is on track) -->
+<div class="w-12 h-12 rounded-full bg-player-red-tint/50 flex items-center justify-center border-2 border-dashed border-player-red/30">
+<span class="font-label-sm text-label-sm text-player-red/50">OUT</span>
+</div>
+</div>
+<div class="text-right font-label-sm text-label-sm text-player-red font-mono">2 In Yard</div>
+</div>
+<!-- ================= TOP ARM (GREEN ENTRY TRACK - 3x6) ================= -->
+<div class="col-span-3 row-span-6 grid grid-cols-3 grid-rows-6 bg-surface-card">
+<!-- Row 0 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Row 1 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)] flex items-center justify-center">
+<!-- Safe Star Square -->
+<span class="material-symbols-outlined text-safe-star text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="bg-player-green shadow-[inset_0_0_0_1px_rgba(46,204,113,0.3)]"></div>
+<!-- Green Start Square -->
+<div class="bg-player-green shadow-[inset_0_0_0_1px_rgba(46,204,113,0.3)] flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px] -rotate-90">arrow_forward</span>
+</div>
+<!-- Row 2 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-player-green shadow-[inset_0_0_0_1px_rgba(46,204,113,0.3)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Row 3 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-player-green shadow-[inset_0_0_0_1px_rgba(46,204,113,0.3)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Row 4 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-player-green shadow-[inset_0_0_0_1px_rgba(46,204,113,0.3)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Row 5 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-player-green shadow-[inset_0_0_0_1px_rgba(46,204,113,0.3)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+</div>
+<!-- ================= QUADRANT 2: TOP-RIGHT (GREEN YARD) ================= -->
+<div class="col-span-6 row-span-6 bg-player-green-tint p-space-md flex flex-col justify-between relative shadow-[inset_0_0_0_1px_rgba(46,204,113,0.15)]">
+<div class="flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-player-green uppercase tracking-wider font-bold">Yard B</span>
+<span class="font-label-sm text-label-sm text-player-green bg-player-green/10 px-2 py-0.5 rounded-full font-mono">Expectimax</span>
+</div>
+<div class="grid grid-cols-2 grid-rows-2 gap-space-md p-space-sm bg-surface-card/80 rounded-xl shadow-sm self-center justify-items-center items-center w-40 h-40">
+<div class="w-12 h-12 rounded-full bg-player-green-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-green-300 to-player-green shadow-[0_3px_0_0_rgba(0,109,55,0.8)] relative flex items-center justify-center">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/40 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-player-green-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-green-300 to-player-green shadow-[0_3px_0_0_rgba(0,109,55,0.8)] relative flex items-center justify-center">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/40 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-player-green-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-green-300 to-player-green shadow-[0_3px_0_0_rgba(0,109,55,0.8)] relative flex items-center justify-center">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/40 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-player-green-tint/50 flex items-center justify-center border-2 border-dashed border-player-green/30">
+<span class="font-label-sm text-label-sm text-player-green/50">OUT</span>
+</div>
+</div>
+<div class="text-right font-label-sm text-label-sm text-player-green font-mono">3 In Yard</div>
+</div>
+<!-- ================= LEFT ARM (RED ENTRY TRACK - 6x3) ================= -->
+<div class="col-span-6 row-span-3 grid grid-cols-6 grid-rows-3 bg-surface-card">
+<!-- Row 0 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Red Start Tile -->
+<div class="bg-player-red shadow-[inset_0_0_0_1px_rgba(231,76,60,0.3)] flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Row 1: Home Straight Red -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-player-red shadow-[inset_0_0_0_1px_rgba(231,76,60,0.3)]"></div>
+<div class="bg-player-red shadow-[inset_0_0_0_1px_rgba(231,76,60,0.3)]"></div>
+<div class="bg-player-red shadow-[inset_0_0_0_1px_rgba(231,76,60,0.3)] flex items-center justify-center relative">
+<!-- Advanced Red Token on Home Stretch -->
+<div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-400 to-player-red shadow-[0_2px_0_0_rgba(186,26,26,0.8)] relative flex items-center justify-center">
+<div class="absolute top-0.5 left-1 w-2.5 h-1 bg-white/50 rounded-full rotate-[-25deg]"></div>
+<span class="font-label-sm text-[9px] text-white font-bold">R2</span>
+</div>
+</div>
+<div class="bg-player-red shadow-[inset_0_0_0_1px_rgba(231,76,60,0.3)]"></div>
+<div class="bg-player-red shadow-[inset_0_0_0_1px_rgba(231,76,60,0.3)]"></div>
+<!-- Row 2 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Safe Tile Left -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)] flex items-center justify-center">
+<span class="material-symbols-outlined text-safe-star text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<!-- Active Red Token on track with pulsing highlight! -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)] flex items-center justify-center relative">
+<!-- Move Hint Badge -->
+<div class="absolute -top-6 z-20 bg-primary text-on-primary font-label-sm text-label-sm px-2 py-0.5 rounded-full shadow-md whitespace-nowrap animate-bounce flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[10px]">arrow_forward</span> Move +5
+                </div>
+<!-- Pulsing Selection Ring -->
+<div class="absolute inset-0 m-auto w-10 h-10 rounded-full bg-primary/30 animate-ping"></div>
+<!-- Interactive Token -->
+<div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-400 to-player-red shadow-[0_3px_0_0_rgba(83,65,205,0.9)] relative flex items-center justify-center scale-110 ring-2 ring-primary cursor-pointer transition-transform">
+<div class="absolute top-0.5 left-1 w-2.5 h-1 bg-white/60 rounded-full rotate-[-25deg]"></div>
+<span class="font-label-sm text-[9px] text-white font-bold">R1</span>
+</div>
+</div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+</div>
+<!-- ================= CENTRAL HOME TRIANGLE (3x3 Matrix) ================= -->
+<div class="col-span-3 row-span-3 relative bg-surface-card flex items-center justify-center shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]">
+<!-- Geometric Triangles -->
+<div class="absolute inset-0">
+<svg class="w-full h-full preserve-3d" viewbox="0 0 100 100">
+<!-- Red Left -->
+<polygon class="fill-player-red opacity-90" points="0,0 50,50 0,100"></polygon>
+<!-- Green Top -->
+<polygon class="fill-player-green opacity-90" points="0,0 50,50 100,0"></polygon>
+<!-- Yellow Right -->
+<polygon class="fill-player-yellow opacity-90" points="100,0 50,50 100,100"></polygon>
+<!-- Blue Bottom -->
+<polygon class="fill-player-blue opacity-90" points="0,100 50,50 100,100"></polygon>
+</svg>
+</div>
+<!-- Central Trophy Crown Circle -->
+<div class="relative z-10 w-9 h-9 rounded-full bg-surface-card shadow-md flex items-center justify-center">
+<span class="material-symbols-outlined text-player-yellow-deep text-[20px]" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+</div>
+<!-- ================= RIGHT ARM (YELLOW ENTRY TRACK - 6x3) ================= -->
+<div class="col-span-6 row-span-3 grid grid-cols-6 grid-rows-3 bg-surface-card">
+<!-- Row 0 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Safe Tile Right -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)] flex items-center justify-center">
+<span class="material-symbols-outlined text-safe-star text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Row 1: Home Straight Yellow -->
+<div class="bg-player-yellow shadow-[inset_0_0_0_1px_rgba(241,196,15,0.3)]"></div>
+<div class="bg-player-yellow shadow-[inset_0_0_0_1px_rgba(241,196,15,0.3)]"></div>
+<div class="bg-player-yellow shadow-[inset_0_0_0_1px_rgba(241,196,15,0.3)]"></div>
+<div class="bg-player-yellow shadow-[inset_0_0_0_1px_rgba(241,196,15,0.3)]"></div>
+<div class="bg-player-yellow shadow-[inset_0_0_0_1px_rgba(241,196,15,0.3)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Row 2 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Yellow Start Tile -->
+<div class="bg-player-yellow shadow-[inset_0_0_0_1px_rgba(241,196,15,0.3)] flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[16px] rotate-180">arrow_forward</span>
+</div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+</div>
+<!-- ================= QUADRANT 3: BOTTOM-LEFT (BLUE YARD) ================= -->
+<div class="col-span-6 row-span-6 bg-player-blue-tint p-space-md flex flex-col justify-between relative shadow-[inset_0_0_0_1px_rgba(52,152,219,0.15)]">
+<div class="flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-player-blue uppercase tracking-wider font-bold">Yard C</span>
+<span class="font-label-sm text-label-sm text-player-blue bg-player-blue/10 px-2 py-0.5 rounded-full font-mono">Random Walk</span>
+</div>
+<div class="grid grid-cols-2 grid-rows-2 gap-space-md p-space-sm bg-surface-card/80 rounded-xl shadow-sm self-center justify-items-center items-center w-40 h-40">
+<div class="w-12 h-12 rounded-full bg-player-blue-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-300 to-player-blue shadow-[0_3px_0_0_rgba(0,93,142,0.8)] relative flex items-center justify-center">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/40 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-player-blue-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-300 to-player-blue shadow-[0_3px_0_0_rgba(0,93,142,0.8)] relative flex items-center justify-center">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/40 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-player-blue-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-300 to-player-blue shadow-[0_3px_0_0_rgba(0,93,142,0.8)] relative flex items-center justify-center">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/40 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-player-blue-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-300 to-player-blue shadow-[0_3px_0_0_rgba(0,93,142,0.8)] relative flex items-center justify-center">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/40 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+</div>
+<div class="text-right font-label-sm text-label-sm text-player-blue font-mono">4 In Yard</div>
+</div>
+<!-- ================= BOTTOM ARM (BLUE ENTRY TRACK - 3x6) ================= -->
+<div class="col-span-3 row-span-6 grid grid-cols-3 grid-rows-6 bg-surface-card">
+<!-- Row 0 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-player-blue shadow-[inset_0_0_0_1px_rgba(52,152,219,0.3)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Row 1 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-player-blue shadow-[inset_0_0_0_1px_rgba(52,152,219,0.3)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Row 2 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-player-blue shadow-[inset_0_0_0_1px_rgba(52,152,219,0.3)]"></div>
+<!-- Capture Burst Location on Cell 28 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)] relative flex items-center justify-center">
+<!-- Burst Badge -->
+<div class="absolute -top-3 -right-3 z-20 bg-safe-star text-on-surface font-label-sm text-[10px] px-1.5 py-0.5 rounded-full font-bold shadow-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[10px]">flash_on</span> Capture!
+                </div>
+<!-- Yellow Token occupying this cell -->
+<div class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-300 to-player-yellow shadow-[0_3px_0_0_rgba(229,169,20,0.9)] relative flex items-center justify-center">
+<div class="absolute top-0.5 left-1 w-2.5 h-1 bg-white/60 rounded-full rotate-[-25deg]"></div>
+<span class="font-label-sm text-[9px] text-on-surface font-bold">Y1</span>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-player-blue shadow-[inset_0_0_0_1px_rgba(52,152,219,0.3)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<!-- Row 4 -->
+<!-- Blue Start Tile -->
+<div class="bg-player-blue shadow-[inset_0_0_0_1px_rgba(52,152,219,0.3)] flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[16px] rotate-90">arrow_forward</span>
+</div>
+<div class="bg-player-blue shadow-[inset_0_0_0_1px_rgba(52,152,219,0.3)]"></div>
+<!-- Safe Tile Bottom -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)] flex items-center justify-center">
+<span class="material-symbols-outlined text-safe-star text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<!-- Row 5 -->
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+<div class="bg-surface-card shadow-[inset_0_0_0_1px_rgba(229,231,235,1)]"></div>
+</div>
+<!-- ================= QUADRANT 4: BOTTOM-RIGHT (YELLOW YARD) ================= -->
+<div class="col-span-6 row-span-6 bg-player-yellow-tint p-space-md flex flex-col justify-between relative shadow-[inset_0_0_0_1px_rgba(241,196,15,0.2)]">
+<div class="flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-player-yellow-deep uppercase tracking-wider font-bold">Yard D</span>
+<span class="font-label-sm text-label-sm text-player-yellow-deep bg-player-yellow/20 px-2 py-0.5 rounded-full font-mono">Aggressive-Heuristic</span>
+</div>
+<div class="grid grid-cols-2 grid-rows-2 gap-space-md p-space-sm bg-surface-card/80 rounded-xl shadow-sm self-center justify-items-center items-center w-40 h-40">
+<div class="w-12 h-12 rounded-full bg-player-yellow-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-yellow-300 to-player-yellow shadow-[0_3px_0_0_rgba(229,169,20,0.8)] relative flex items-center justify-center">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/50 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-player-yellow-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-yellow-300 to-player-yellow shadow-[0_3px_0_0_rgba(229,169,20,0.8)] relative flex items-center justify-center">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/50 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-player-yellow-tint flex items-center justify-center shadow-inner">
+<div class="w-9 h-9 rounded-full bg-gradient-to-br from-yellow-300 to-player-yellow shadow-[0_3px_0_0_rgba(229,169,20,0.8)] relative flex items-center justify-center">
+<div class="absolute top-1 left-2 w-3 h-1.5 bg-white/50 rounded-full rotate-[-25deg]"></div>
+<span class="w-2 h-2 rounded-full bg-white/70"></span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-player-yellow-tint/50 flex items-center justify-center border-2 border-dashed border-player-yellow/40">
+<span class="font-label-sm text-label-sm text-player-yellow-deep/50">OUT</span>
+</div>
+</div>
+<div class="text-right font-label-sm text-label-sm text-player-yellow-deep font-mono">3 In Yard</div>
+</div>
+</div>
+</div>
+<!-- Board Footer Sub-bar -->
+<div class="w-full max-w-[720px] mt-space-sm flex items-center justify-between text-text-secondary font-label-sm text-label-sm px-space-xs">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-player-red"></span> Red (Turn Active)</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-player-green"></span> Green (Waiting)</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-player-yellow"></span> Yellow (Waiting)</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-player-blue"></span> Blue (Waiting)</span>
+</div>
+<div class="flex items-center gap-1 text-text-muted">
+<span class="material-symbols-outlined text-[14px]">grid_4x4</span> 15x15 Matrix
+          </div>
+</div>
+</div>
+<!-- ZONE 3: Right Sidebar (Telemetry & Game Control - 4 Cols approx 360-440px) -->
+<div class="xl:col-span-4 flex flex-col gap-space-md w-full">
+<!-- TURN CARD -->
+<div class="bg-surface-card rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-400 to-player-red shadow-[0_2px_0_0_rgba(186,26,26,0.8)] flex items-center justify-center text-white font-headline-sm text-[13px]">
+                P1
+              </div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Red's Turn</h3>
+<span class="font-body-sm text-body-sm text-text-secondary">Human Commander</span>
+</div>
+</div>
+<div class="flex items-center gap-1 bg-primary-fixed text-on-primary-fixed-variant px-space-sm py-1 rounded-full font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+<span>Expectimax · Depth 2</span>
+</div>
+</div>
+<!-- Turn Timer with Animated Striped Fill -->
+<div class="mt-space-sm">
+<div class="flex justify-between items-center mb-1 font-label-sm text-label-sm text-text-secondary">
+<span>Time Remaining</span>
+<span class="font-mono text-on-surface font-bold">8.4s</span>
+</div>
+<div class="w-full bg-surface-container h-2.5 rounded-full overflow-hidden p-0.5">
+<div class="h-full rounded-full bg-gradient-to-r from-primary to-primary-container relative w-[70%]" style="background-size: 20px 20px;">
+<div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- DICE ROLL SECTION (Tactile Physical Feel) -->
+<div class="bg-surface-card rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Active Dice Value</span>
+<div class="flex items-center gap-space-xs font-label-sm text-label-sm text-text-secondary">
+<span class="material-symbols-outlined text-[16px] text-player-green animate-spin" style="animation-duration: 3s;">sync</span>
+<span>RNG Seed: #849102</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<!-- 72px 3D-styled Dice Face showing 5 Pips -->
+<div class="relative w-[72px] h-[72px] bg-gradient-to-br from-white to-surface-container rounded-xl shadow-[0_6px_0_0_rgba(200,196,215,1),0_10px_16px_rgba(0,0,0,0.08)] flex items-center justify-center p-2.5 border-none transform transition active:translate-y-1 active:shadow-[0_2px_0_0_rgba(200,196,215,1)]">
+<!-- Dice 5 Pips SVG Matrix -->
+<svg class="w-full h-full fill-on-surface" viewbox="0 0 100 100">
+<!-- Top-Left -->
+<circle class="fill-primary" cx="22" cy="22" r="9"></circle>
+<!-- Top-Right -->
+<circle class="fill-primary" cx="78" cy="22" r="9"></circle>
+<!-- Center -->
+<circle class="fill-player-red" cx="50" cy="50" r="9"></circle>
+<!-- Bottom-Left -->
+<circle class="fill-primary" cx="22" cy="78" r="9"></circle>
+<!-- Bottom-Right -->
+<circle class="fill-primary" cx="78" cy="78" r="9"></circle>
+</svg>
+</div>
+<!-- Dice Roll Meta & Action -->
+<div class="flex-1 flex flex-col gap-space-xs">
+<button class="w-full h-12 bg-primary text-on-primary hover:bg-primary-hover active:translate-y-0.5 rounded-lg font-label-lg text-label-lg shadow-[0_3px_0_0_rgba(64,41,186,1)] transition-all flex items-center justify-center gap-space-xs" type="button">
+<span class="material-symbols-outlined text-[20px]">casino</span>
+<span>Roll Dice (Space)</span>
+</button>
+<div class="flex items-center justify-between px-space-xs pt-1">
+<span class="font-label-sm text-label-sm text-text-secondary">Automate AI Turns</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Dynamic Move Hint Banner -->
+<div class="bg-player-red-tint text-on-surface rounded-lg p-space-sm flex items-center gap-space-sm shadow-[0_1px_0_0_rgba(231,76,60,0.15)]">
+<span class="material-symbols-outlined text-player-red text-[18px]">touch_app</span>
+<span class="font-body-sm text-body-sm">Select token <strong class="text-player-red font-semibold">R1</strong> on track to advance 5 squares.</span>
+</div>
+</div>
+<!-- SCORE & RACE PROGRESS MINI-PANEL -->
+<div class="bg-surface-card rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Race Progress</span>
+<span class="font-label-sm text-label-sm text-text-muted uppercase">Home Stretch</span>
+</div>
+<div class="flex flex-col gap-space-sm">
+<!-- Red Player -->
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-space-sm w-28">
+<span class="w-3 h-3 rounded-full bg-player-red"></span>
+<span class="font-label-md text-label-md text-on-surface">Red</span>
+</div>
+<div class="flex-1 mx-space-sm bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-player-red h-full w-[65%] rounded-full"></div>
+</div>
+<div class="flex items-center gap-1 font-mono text-label-sm text-text-secondary w-12 justify-end">
+<span class="material-symbols-outlined text-[13px] text-player-red">home</span> 1/4
+              </div>
+</div>
+<!-- Green Player -->
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-space-sm w-28">
+<span class="w-3 h-3 rounded-full bg-player-green"></span>
+<span class="font-label-md text-label-md text-on-surface">Green (AI)</span>
+</div>
+<div class="flex-1 mx-space-sm bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-player-green h-full w-[45%] rounded-full"></div>
+</div>
+<div class="flex items-center gap-1 font-mono text-label-sm text-text-secondary w-12 justify-end">
+<span class="material-symbols-outlined text-[13px] text-player-green">home</span> 0/4
+              </div>
+</div>
+<!-- Yellow Player -->
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-space-sm w-28">
+<span class="w-3 h-3 rounded-full bg-player-yellow"></span>
+<span class="font-label-md text-label-md text-on-surface">Yellow (AI)</span>
+</div>
+<div class="flex-1 mx-space-sm bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-player-yellow h-full w-[50%] rounded-full"></div>
+</div>
+<div class="flex items-center gap-1 font-mono text-label-sm text-text-secondary w-12 justify-end">
+<span class="material-symbols-outlined text-[13px] text-player-yellow-deep">home</span> 1/4
+              </div>
+</div>
+<!-- Blue Player -->
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-space-sm w-28">
+<span class="w-3 h-3 rounded-full bg-player-blue"></span>
+<span class="font-label-md text-label-md text-on-surface">Blue (AI)</span>
+</div>
+<div class="flex-1 mx-space-sm bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-player-blue h-full w-[20%] rounded-full"></div>
+</div>
+<div class="flex items-center gap-1 font-mono text-label-sm text-text-secondary w-12 justify-end">
+<span class="material-symbols-outlined text-[13px] text-player-blue">home</span> 0/4
+              </div>
+</div>
+</div>
+</div>
+<!-- MATCH EVENT LOG (Monospace Ledger) -->
+<div class="bg-surface-card rounded-xl p-space-md shadow-sm flex flex-col flex-1">
+<div class="flex items-center justify-between pb-space-xs mb-space-xs border-b-0">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-text-secondary">list_alt</span>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Match Log</span>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container px-space-xs py-0.5 rounded text-text-secondary flex items-center gap-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-player-green animate-pulse"></span> Auto-scroll
+            </span>
+</div>
+<div class="flex flex-col gap-space-xs max-h-44 overflow-y-auto font-mono text-body-sm pr-1">
+<div class="flex items-start gap-space-xs py-1 text-on-surface">
+<span class="text-text-muted text-[11px] mt-0.5">[04:12]</span>
+<span class="w-2 h-2 rounded-full bg-player-red mt-1.5 flex-shrink-0"></span>
+<span class="leading-snug">Red rolled <strong>6</strong> — spawned token from yard.</span>
+</div>
+<div class="flex items-start gap-space-xs py-1 text-on-surface">
+<span class="text-text-muted text-[11px] mt-0.5">[04:15]</span>
+<span class="w-2 h-2 rounded-full bg-player-green mt-1.5 flex-shrink-0"></span>
+<span class="leading-snug">Green (Expectimax) rolled <strong>4</strong> — moved to safe square <span class="text-safe-star font-bold">★</span>.</span>
+</div>
+<div class="flex items-start gap-space-xs py-1 text-on-surface bg-player-yellow-tint/70 px-1 rounded">
+<span class="text-text-muted text-[11px] mt-0.5">[04:18]</span>
+<span class="w-2 h-2 rounded-full bg-player-yellow mt-1.5 flex-shrink-0"></span>
+<span class="leading-snug">Yellow captured Blue on cell <strong>34</strong>!</span>
+</div>
+<div class="flex items-start gap-space-xs py-1 text-on-surface">
+<span class="text-text-muted text-[11px] mt-0.5">[04:22]</span>
+<span class="w-2 h-2 rounded-full bg-player-red mt-1.5 flex-shrink-0"></span>
+<span class="leading-snug">Red advanced token to Home stretch (cell 53).</span>
+</div>
+<div class="flex items-start gap-space-xs py-1 text-on-surface">
+<span class="text-text-muted text-[11px] mt-0.5">[04:25]</span>
+<span class="w-2 h-2 rounded-full bg-player-red mt-1.5 flex-shrink-0"></span>
+<span class="leading-snug font-semibold text-primary">Red rolled 5 — waiting for token pick...</span>
+</div>
+</div>
+</div>
+<!-- ACTION BUTTONS TOOLBAR -->
+<div class="grid grid-cols-3 gap-space-sm pt-space-xs">
+<button class="flex items-center justify-center gap-space-xs py-space-sm bg-surface-card hover:bg-surface-container-low text-on-surface font-label-md text-label-md rounded-lg shadow-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">pause_circle</span>
+<span>Pause</span>
+</button>
+<button class="flex items-center justify-center gap-space-xs py-space-sm bg-surface-container text-primary hover:bg-surface-container-high font-label-md text-label-md rounded-lg shadow-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">account_tree</span>
+<span>AI Tree</span>
+</button>
+<button class="flex items-center justify-center gap-space-xs py-space-sm bg-error-container text-on-error-container hover:opacity-90 font-label-md text-label-md rounded-lg shadow-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">flag</span>
+<span>Resign</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-card shadow-[0_-1px_6px_rgba(0,0,0,0.03)] py-space-md mt-auto"><div class="w-full max-w-[1440px] mx-auto px-margin flex flex-col md:flex-row items-center justify-between gap-space-sm"><div class="flex items-center gap-space-md"><span class="font-headline-sm text-headline-sm text-on-surface">Ludo AI Engine</span><span class="font-body-sm text-body-sm text-text-muted">Tactile Modernism Simulation Canvas (1280x860 Optimized)</span></div><div class="flex items-center gap-space-lg font-body-sm text-body-sm text-text-secondary"><span>Deterministic RNG Core</span><span>Expectimax &amp; MCTS Engine</span><span>© 2025 AI Lab Environment</span></div></div></footer></body></html>
