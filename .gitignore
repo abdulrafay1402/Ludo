@@ -1,1 +1,4 @@
 .vscode/mcp.json
+stitch-assets/
+.venv/
+__pycache__/
