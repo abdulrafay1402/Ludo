@@ -37,6 +37,7 @@ NAMES = ["Red", "Green", "Yellow", "Blue"]
 START = np.array([0, 13, 26, 39], dtype=np.int32)
 SAFE = np.array([0, 13, 26, 39, 8, 21, 34, 47], dtype=np.int32)
 FINISH = 56
+MAX_DEPTH = 3
 
 YARD, TRACK, HOME_COL = -1, 0, 51
 AI_TYPES = ["Random", "Aggressive", "Defensive", "Expectimax"]
@@ -181,9 +182,10 @@ class Board:
 
 class AIContext:
     """Bundles shared AI info: active seats and search depth."""
-    def __init__(self, active, depth=1):
+    def __init__(self, active, depth=1, rng=None):
         self.active = list(active)
         self.depth = depth
+        self.rng = rng if rng is not None else random.Random()
 
 
 class Player:
@@ -207,7 +209,7 @@ class HumanPlayer(Player):
 
 class RandomAI(Player):
     def choose(self, state, dice, ctx):
-        return random.choice(Board.legal_moves(state, self.index, dice))
+        return ctx.rng.choice(Board.legal_moves(state, self.index, dice))
 
 
 # --- shared heuristic used by Expectimax ----------------------------------
@@ -273,7 +275,7 @@ class AggressiveAI(Player):
                  + (60 if new == FINISH else 0)
                  + (30 if r == YARD else 0)
                  + 0.1 * new
-                 + random.random() * 0.01)
+                 + ctx.rng.random() * 0.01)
             if s > best_s:
                 best, best_s = t, s
         return best
@@ -299,7 +301,7 @@ class DefensiveAI(Player):
                 s -= 35
             if r == YARD:
                 s += 20
-            s += 10 * cap + 0.05 * new + random.random() * 0.01
+            s += 10 * cap + 0.05 * new + ctx.rng.random() * 0.01
             if s > best_s:
                 best, best_s = t, s
         return best
@@ -313,7 +315,7 @@ class ExpectimaxAI(Player):
             if Board.won(ns, self.index):
                 return t
             nxt = self.index if extra else next_player(self.index, ctx.active)
-            v = expectimax(ns, nxt, ctx.depth, self.index, ctx.active) + random.random() * 1e-6
+            v = expectimax(ns, nxt, ctx.depth, self.index, ctx.active) + ctx.rng.random() * 1e-6
             if v > best_v:
                 best, best_v = t, v
         return best
@@ -339,17 +341,26 @@ def make_player(mode, index):
 class LudoGame:
     """Pure logic (no rendering). Shared by GUI and --sim."""
 
-    def __init__(self, modes, depth=1):
+    def __init__(self, modes, depth=1, seed=None):
         """modes: dict {seat_index: mode_string}."""
         self.modes = dict(modes)
+        if not 2 <= len(self.modes) <= len(NAMES):
+            raise ValueError("A Ludo game requires 2 to 4 active players.")
+        if any(seat not in range(len(NAMES)) for seat in self.modes):
+            raise ValueError("Player seats must be between 0 and 3.")
+        if any(mode not in PLAYER_MODES[:-1] for mode in self.modes.values()):
+            raise ValueError("Each active player must use a valid player mode.")
+        if not isinstance(depth, int) or not 0 <= depth <= MAX_DEPTH:
+            raise ValueError(f"Expectimax depth must be between 0 and {MAX_DEPTH}.")
         self.active = sorted(self.modes)
         self.players = {p: make_player(self.modes[p], p) for p in self.active}
         self.state = Board.new_state()
         self.turn = self.active[0]
-        self.ctx = AIContext(self.active, depth)
+        self.rng = random.Random(seed)
+        self.ctx = AIContext(self.active, depth, self.rng)
 
     def roll(self):
-        return random.randint(1, 6)
+        return self.rng.randint(1, 6)
 
     def legal(self, dice):
         return Board.legal_moves(self.state, self.turn, dice)
@@ -372,8 +383,8 @@ class LudoGame:
         return None
 
 
-def play_game(modes, depth=1, max_turns=4000):
-    g = LudoGame(modes, depth)
+def play_game(modes, depth=1, max_turns=4000, seed=None):
+    g = LudoGame(modes, depth, seed)
     for _ in range(max_turns):
         dice = g.roll()
         moves = g.legal(dice)
@@ -381,7 +392,7 @@ def play_game(modes, depth=1, max_turns=4000):
         if moves:
             t = g.ai_choose(dice)
             if t is None:
-                t = random.choice(moves)
+                t = g.rng.choice(moves)
             extra, _ = g.apply(t, dice)
             if g.winner() is not None:
                 return g.winner()
@@ -389,20 +400,28 @@ def play_game(modes, depth=1, max_turns=4000):
     return None
 
 
-def simulate(types, n, depth):
+def simulate(types, n, depth, seed=None):
+    if not 2 <= len(types) <= len(NAMES):
+        raise ValueError("A simulation requires 2 to 4 player types.")
+    if any(player_type not in AI_TYPES for player_type in types):
+        raise ValueError("Simulation player types must be valid AI types.")
+    if not isinstance(n, int) or n < 1:
+        raise ValueError("The number of simulation games must be positive.")
+    if not isinstance(depth, int) or not 0 <= depth <= MAX_DEPTH:
+        raise ValueError(f"Expectimax depth must be between 0 and {MAX_DEPTH}.")
+
     wins = Counter()
     draws = 0
-    win_matrix = np.zeros(len(types), dtype=np.int32)   # NumPy use
+    rng = random.Random(seed)
     for i in range(n):
         seats = list(types)
-        random.shuffle(seats)
+        rng.shuffle(seats)
         modes = {p: seats[p] for p in range(len(seats))}
-        w = play_game(modes, depth)
+        w = play_game(modes, depth, seed=rng.getrandbits(64))
         if w is None:
             draws += 1
         else:
             wins[modes[w]] += 1
-            win_matrix[w] += 1
         if (i + 1) % 25 == 0:
             print(f"  ... {i + 1}/{n} games")
     print(f"\nResults over {n} games ({len(types)} players, Expectimax depth {depth})")
@@ -619,7 +638,7 @@ class PlayScreen:
             return
         t = self.game.players[p].choose(self.game.state, self.dice, self.game.ctx)
         if t is None:
-            t = random.choice(self.moves)
+            t = self.game.rng.choice(self.moves)
         self._do_move(t)
 
     def _do_move(self, t):
@@ -855,14 +874,22 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--sim", type=int, default=0,
                     help="run N headless games instead of the GUI")
-    ap.add_argument("--depth", type=int, default=1,
-                    help="Expectimax depth for simulation")
+    ap.add_argument("--depth", type=int, choices=range(MAX_DEPTH + 1), default=1,
+                    help=f"Expectimax depth for simulation (0-{MAX_DEPTH})")
+    ap.add_argument("--seed", type=int,
+                    help="seed for reproducible simulations (requires --sim)")
     ap.add_argument("--types", nargs="+",
                     default=["Aggressive", "Defensive", "Expectimax", "Random"],
                     choices=AI_TYPES)
     a = ap.parse_args()
 
     if a.sim:
-        simulate(a.types, a.sim, a.depth)
+        if a.sim < 0:
+            ap.error("--sim must be zero or a positive number of games")
+        if not 2 <= len(a.types) <= len(NAMES):
+            ap.error("--types must specify 2 to 4 AI players")
+        simulate(a.types, a.sim, a.depth, seed=a.seed)
     else:
+        if a.seed is not None:
+            ap.error("--seed requires --sim")
         run_gui()

@@ -22,21 +22,23 @@ from ludo import (
 )
 
 
-BACKGROUND = "#F3F5F8"
-CARD = "#FFFFFF"
-TEXT = "#172033"
-SECONDARY_TEXT = "#667085"
-MUTED_TEXT = "#98A2B3"
-PRIMARY = "#8A5A2B"
-PRIMARY_HOVER = "#6E4520"
-PRIMARY_LIGHT = "#F1E4D3"
-SURFACE_LOW = "#F1F4F9"
-SURFACE_HIGH = "#E4EAF2"
-BORDER = "#DCE2EA"
+BACKGROUND = "#F6F4EF"
+CARD = "#FFFEFA"
+TEXT = "#1D2D2A"
+SECONDARY_TEXT = "#586B64"
+MUTED_TEXT = "#89958E"
+PRIMARY = "#177568"
+PRIMARY_HOVER = "#11594F"
+PRIMARY_LIGHT = "#DCEFEA"
+SURFACE_LOW = "#F0F3EC"
+SURFACE_HIGH = "#E2E9DE"
+BORDER = "#D5DED4"
 BOARD_FELT = "#23634F"
 BOARD_FELT_DARK = "#164B3B"
-BOARD_FRAME = "#253449"
+BOARD_FRAME = "#203B34"
 TRACK_TILE = "#FFFDF8"
+DIE_ROLL_FRAMES = (2, 5, 1, 4, 6, 3)
+DIE_ROLL_DELAY_MS = 55
 PLAYER_HEX = ("#E64B4B", "#27A875", "#E7AA32", "#4388D3")
 PLAYER_TINT = ("#FCE7E7", "#E2F4EC", "#FBF0D7", "#E7F0FB")
 PLAYER_DARK = ("#B8323D", "#14734F", "#986513", "#285A99")
@@ -202,7 +204,7 @@ class LudoTkApp:
         footer.pack_propagate(False)
         tk.Label(
             footer,
-            text="Ludo AI Engine  ·  Deterministic RNG Core  ·  Expectimax Search",
+            text="Ludo AI Engine  ·  Randomized RNG Core  ·  Expectimax Search",
             bg=CARD,
             fg=SECONDARY_TEXT,
             font=("Segoe UI", 8),
@@ -300,6 +302,7 @@ class LudoTkApp:
         if self.play_screen is None:
             return
         self.result_data = self.play_screen.get_result(winner, mode)
+        self.play_screen.dispose()
         self.active_screen = "result"
         self._clear_content()
         self.result_screen = GameOverScreen(self, self.content, self.result_data)
@@ -465,7 +468,7 @@ class SetupScreen:
             resolution=1,
             bg=SURFACE_LOW,
             fg=TEXT,
-            troughcolor="#D7D4EA",
+            troughcolor="#E5C982",
             activebackground=PRIMARY,
             highlightthickness=0,
             bd=0,
@@ -628,9 +631,14 @@ class PlayScreen:
         self.scheduled_delay = 0
         self.roll_count = 0
         self.capture_count = 0
+        self.pending_roll = None
+        self.roll_animation_step = 0
+        self.display_dice = 0
+        self.token_pulse_after_id = None
         self.log = []
         self.started_at = time.time()
         self.finished = False
+        self.disposed = False
         self._building = False
         self._space_binding = None
         self.build(parent)
@@ -902,13 +910,15 @@ class PlayScreen:
             return
         self.moves = []
         self.dice = 0
+        self.display_dice = 0
+        self.pending_roll = None
         self.pending_extra = False
         player = self.game.turn
         if self.game.players[player].is_human:
             self.phase = "roll"
         elif self.auto_ai.get():
             self.phase = "busy"
-            self._schedule(self._roll_and_branch, 480)
+            self._schedule(self._start_roll_animation, 480)
         else:
             self.phase = "ai_ready"
         self.refresh()
@@ -946,13 +956,37 @@ class PlayScreen:
         if self.paused or self.phase != "roll":
             return
         self.phase = "busy"
+        self.refresh()
+        self._start_roll_animation()
+
+    def _start_roll_animation(self):
+        if self.paused or self.finished:
+            return
+        if self.pending_roll is None:
+            self.pending_roll = self.game.roll()
+            self.roll_count += 1
+            self.roll_animation_step = 0
+        self._animate_roll_frame()
+
+    def _animate_roll_frame(self):
+        if self.paused or self.finished or self.pending_roll is None:
+            return
+        if self.roll_animation_step < len(DIE_ROLL_FRAMES):
+            self.display_dice = DIE_ROLL_FRAMES[self.roll_animation_step]
+            self.roll_animation_step += 1
+            self._draw_die()
+            if self.pending_roll is not None:
+                self.hint_var.set("Rolling the die...")
+            self._schedule(self._animate_roll_frame, DIE_ROLL_DELAY_MS)
+            return
+        self.dice = self.pending_roll
+        self.display_dice = self.dice
+        self.pending_roll = None
         self._roll_and_branch()
 
     def _roll_and_branch(self):
         if self.paused or self.finished:
             return
-        self.dice = self.game.roll()
-        self.roll_count += 1
         player = self.game.turn
         self.moves = self.game.legal(self.dice)
         self._add_log(f"{NAMES[player]} rolled {self.dice}.")
@@ -982,7 +1016,13 @@ class PlayScreen:
         if self.paused or self.phase != "ai_ready":
             return
         self.phase = "busy"
-        self._roll_and_branch()
+        self.refresh()
+        if self.pending_roll is not None:
+            self._animate_roll_frame()
+        elif self.dice and self.moves:
+            self._ai_step()
+        else:
+            self._start_roll_animation()
 
     def _do_move(self, token):
         player = self.game.turn
@@ -1014,6 +1054,50 @@ class PlayScreen:
             self._add_log(f"{NAMES[player]} earned an extra turn.")
         self._schedule(self._advance_turn, 480)
         self.refresh()
+        self._start_token_pulse(player, token)
+
+    def _start_token_pulse(self, player, token):
+        self._cancel_token_pulse()
+        self._animate_token_pulse(player, token)
+
+    def _animate_token_pulse(self, player, token, frame=0):
+        self.token_pulse_after_id = None
+        if self.paused or self.finished:
+            return
+        expansions = (3, 8, 12, 8)
+        colors = ("#D2A743", PRIMARY, PRIMARY, "#D2A743")
+        if frame >= len(expansions):
+            self.canvas.delete("token-pulse")
+            return
+        bounds = self.canvas.bbox(f"token-face-{player}-{token}")
+        if bounds is None:
+            return
+        self.canvas.delete("token-pulse")
+        x0, y0, x1, y1 = bounds
+        expansion = expansions[frame]
+        self.canvas.create_oval(
+            x0 - expansion,
+            y0 - expansion,
+            x1 + expansion,
+            y1 + expansion,
+            outline=colors[frame],
+            width=2,
+            tags=("token-pulse",),
+        )
+        self.token_pulse_after_id = self.app.root.after(
+            55,
+            lambda: self._animate_token_pulse(player, token, frame + 1),
+        )
+
+    def _cancel_token_pulse(self):
+        if self.token_pulse_after_id is not None:
+            try:
+                self.app.root.after_cancel(self.token_pulse_after_id)
+            except tk.TclError:
+                pass
+            self.token_pulse_after_id = None
+        if hasattr(self, "canvas"):
+            self.canvas.delete("token-pulse")
 
     def _advance_turn(self):
         if not self.pending_extra:
@@ -1052,7 +1136,8 @@ class PlayScreen:
             outline=BORDER,
             width=2,
         )
-        if not self.dice:
+        dice = self.display_dice or self.dice
+        if not dice:
             canvas.create_text(
                 34, 33, text="–", fill=MUTED_TEXT,
                 font=("Segoe UI", 20, "bold"),
@@ -1066,7 +1151,7 @@ class PlayScreen:
             5: ((20, 19), (48, 19), (34, 33), (20, 47), (48, 47)),
             6: ((20, 17), (48, 17), (20, 33), (48, 33), (20, 49), (48, 49)),
         }
-        for x, y in positions[self.dice]:
+        for x, y in positions[dice]:
             canvas.create_oval(x - 4, y - 4, x + 4, y + 4, fill=PRIMARY, outline="")
 
     def _refresh_progress(self):
@@ -1267,7 +1352,7 @@ class PlayScreen:
                     fill=PLAYER_HEX[player],
                     outline=PRIMARY if selectable else PLAYER_DARK[player],
                     width=3 if selectable else 2,
-                    tags=(tag, "token"),
+                    tags=(tag, "token", f"token-face-{player}-{token}"),
                 )
                 canvas.create_oval(
                     x - radius * 0.57,
@@ -1305,13 +1390,22 @@ class PlayScreen:
             self.refresh()
             return
         if not self.auto_ai.get():
-            if self.phase == "busy" and self.scheduled_callback == self._roll_and_branch:
+            if self.phase == "busy" and self.scheduled_callback in (
+                self._start_roll_animation,
+                self._animate_roll_frame,
+                self._ai_step,
+            ):
                 self._cancel_timer()
                 self.scheduled_callback = None
                 self.phase = "ai_ready"
         elif self.phase == "ai_ready":
             self.phase = "busy"
-            self._schedule(self._roll_and_branch, 260)
+            callback = (
+                self._ai_step
+                if self.dice and self.moves
+                else self._start_roll_animation
+            )
+            self._schedule(callback, 260)
         self.refresh()
 
     def toggle_pause(self):
@@ -1321,6 +1415,7 @@ class PlayScreen:
         if self.paused:
             if self.after_id is not None:
                 self._cancel_timer()
+            self._cancel_token_pulse()
         elif self.scheduled_callback is not None:
             self.after_id = self.app.root.after(
                 self.scheduled_delay,
@@ -1345,7 +1440,11 @@ class PlayScreen:
         self.turn_subtitle.configure(
             text="Human Commander" if mode == "Human" else f"{mode} AI"
         )
-        if self.phase == "roll":
+        if self.paused:
+            hint = "Resume the match to continue."
+        elif self.pending_roll is not None:
+            hint = "Rolling the die..."
+        elif self.phase == "roll":
             hint = "Roll the die. A highlighted token can be moved after the roll."
         elif self.phase == "pick":
             hint = f"Rolled {self.dice}. Click one of the highlighted {NAMES[player]} tokens."
@@ -1353,8 +1452,6 @@ class PlayScreen:
             hint = "Run AI Turn to roll and let this seat choose its move."
         elif self.phase == "over":
             hint = "The winner has brought all four tokens home."
-        elif self.paused:
-            hint = "Resume the match to continue."
         else:
             hint = "The AI is choosing its move."
         self.hint_var.set(hint)
@@ -1391,8 +1488,12 @@ class PlayScreen:
         }
 
     def dispose(self):
+        if self.disposed:
+            return
+        self.disposed = True
         self.finished = True
         self._cancel_timer()
+        self._cancel_token_pulse()
         if self._space_binding is not None:
             try:
                 self.app.root.unbind("<space>", self._space_binding)
