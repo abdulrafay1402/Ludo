@@ -232,14 +232,70 @@ def player_score(state, p, active):
     return s
 
 
+def _player_score_features(state, p, active):
+    progress = finished = home_column = safe = 0
+    danger_count = danger_progress = 0
+    for r in state[p]:
+        r = int(r)
+        if r == YARD:
+            continue
+        if r == FINISH:
+            finished += 1
+            continue
+        progress += r
+        if r > 50:
+            home_column += 1
+        elif Board.abs_sq(p, r) in SAFE:
+            safe += 1
+        if Board.in_danger(state, p, r, active):
+            danger_count += 1
+            danger_progress += r
+    return np.array(
+        [1.0, progress, finished, home_column, safe, danger_count, danger_progress],
+        dtype=np.float64,
+    )
+
+
+class LinearRegressionEvaluator:
+    """Learn Expectimax's leaf-score weights from generated board examples."""
+
+    def __init__(self):
+        rng = random.Random(2002)
+        positions = (YARD, 0, 1, 8, 20, 35, 48, 50, 51, 53, 55, FINISH)
+        active = list(range(len(NAMES)))
+        features = []
+        targets = []
+
+        for _ in range(128):
+            state = Board.new_state()
+            for p in active:
+                for token in range(4):
+                    state[p, token] = rng.choice(positions)
+            for p in active:
+                features.append(_player_score_features(state, p, active))
+                targets.append(player_score(state, p, active))
+
+        self.weights = np.linalg.lstsq(
+            np.asarray(features), np.asarray(targets), rcond=None
+        )[0]
+
+    def evaluate(self, state, p, active):
+        return float(np.dot(_player_score_features(state, p, active), self.weights))
+
+
+_LINEAR_EVALUATOR = LinearRegressionEvaluator()
+
+
 def heuristic(state, me, active):
     if Board.won(state, me):
         return 10000
     for q in active:
         if q != me and Board.won(state, q):
             return -10000
-    others = [player_score(state, q, active) for q in active if q != me]
-    return player_score(state, me, active) - sum(others) / len(others)
+    others = [_LINEAR_EVALUATOR.evaluate(state, q, active)
+              for q in active if q != me]
+    return (_LINEAR_EVALUATOR.evaluate(state, me, active)
+            - sum(others) / len(others))
 
 
 def expectimax(state, p, depth, me, active):
